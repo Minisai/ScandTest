@@ -1,0 +1,7 @@
+<ul >
+  <% Employee.all.each do |employee| %>
+      <li>
+        <%= employee.first_name %> <%= employee.surname %> <%= employee.date_of_birth %> <%= employee.salary %>
+      </li>
+  <% end %>
+</ul>
