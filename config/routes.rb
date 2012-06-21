@@ -1,5 +1,7 @@
 ScandTest::Application.routes.draw do
+  root :to  => 'employees#index'
   resources :employees
+  match 'employee/:id/edit' => 'employee#start_edit', :as => :employee_start_edit
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

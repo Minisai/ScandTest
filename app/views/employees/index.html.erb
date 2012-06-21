@@ -1,0 +1,97 @@
+<div>
+
+  <!--<div id="opaco" class="hidden"></div>-->
+  <div id="popup" class="hidden"></div>
+
+  <div id="elemets">
+    <div name="checkbox">
+      <input type=checkbox name="Use_Ajax"/> Use Ajax
+    </div>
+    <table name="Employees_table" id="employees" >
+      <tr>
+        <th>First_name</th>
+        <th>Surname</th>
+        <th>Date of Birth</th>
+        <th>Salary</th>
+      </tr>
+      <% Employee.all.each do |employee| %>
+          <tr onclick="koko(<%= employee.id %>)">
+            <td><%= employee.first_name %></td>
+            <td><%= employee.surname %></td>
+            <td><%= employee.formatted_date_of_birth(employee.date_of_birth)%></td>
+            <td><%= employee.salary %>  RUB</td>
+          </tr>
+      <% end %>
+    </table>
+    <button name class="Add_Button" onclick="show_add_popup('add')"> Add </button>
+    <button name class="Edit_Button"> Edit </button>
+    <button name class="Remove_Button"> Remove </button>
+  </div>
+
+  <script type="text/javascript">
+      function koko(id) {
+          alert(id)
+      }
+
+      function show_add_popup(popup_type)
+      {
+          //when IE - fade immediately
+          //if($.browser.msie)
+          //{
+          //    $('#opaco').height($(document).height()).toggleClass('hidden');
+          //}
+          //else
+          //in all the rest browsers - fade slowly
+          //{
+          //    $('#opaco').height($(document).height()).toggleClass('hidden').fadeTo('slow', 0.7);
+          //}
+
+          $('#elemets').toggleClass('hidden');
+
+          $('#popup')
+                  .html($('#popup_' + popup_type).html())
+                  .alignCenter()
+                  .toggleClass('hidden');
+
+          return false;
+      }
+      $(document).ready(function(){
+          //align element in the middle of the screen
+          $.fn.alignCenter = function() {
+              //get margin left
+              var marginLeft = Math.max(40, parseInt($(window).width()/2 - $(this).width()/2)) + 'px';
+              //get margin top
+              var marginTop = Math.max(40, parseInt($(window).height()/2 - $(this).height()/2)) + 'px';
+              //return updated element
+              return $(this).css({'margin-left':marginLeft, 'margin-top':marginTop});
+          };
+      });
+
+      function closePopup()
+      {
+//          $('#opaco').toggleClass('hidden').removeAttr('style');
+          $('#popup').toggleClass('hidden');
+          $('#elemets').toggleClass('hidden');
+          return false;
+      }
+  </script>
+
+  <div id="popup_add" class="hidden">
+    <div class="add" class="hidden">
+      <h3>Add Employee</h3>
+      <%= form_for Employee.new do |f| %>
+          <div class="field">
+            <%= f.text_field :first_name %>
+            <%= f.text_field :surname %>
+            <%= f.text_field :date_of_birth %>
+            <%= f.text_field :salary  %>
+          </div>
+          <div class="actions">
+            <%= f.submit "Submit" %>
+          </div>
+      <% end %>
+      <input type="button" value="Send" onclick="closePopup(); return false;" />
+      <input type="button" value="Cancel" onclick="closePopup(); return false;" />
+    </div>
+  </div>
+</div>
