@@ -1,6 +1,6 @@
 <div>
 
-  <!--<div id="opaco" class="hidden"></div>-->
+  <div id="opaco" class="hidden"></div>
   <div id="popup" class="hidden"></div>
 
   <div id="elemets">
@@ -15,10 +15,10 @@
         <th>Salary</th>
       </tr>
       <% Employee.all.each do |employee| %>
-          <tr onclick="koko(<%= employee.id %>)">
+          <tr onclick="koko(<%= employee.id %>)" id ="<%= employee.id %>">
             <td><%= employee.first_name %></td>
             <td><%= employee.surname %></td>
-            <td><%= employee.formatted_date_of_birth(employee.date_of_birth)%></td>
+            <td><%= employee.date_of_birth%></td>
             <td><%= employee.salary %>  RUB</td>
           </tr>
       <% end %>
@@ -29,24 +29,28 @@
   </div>
 
   <script type="text/javascript">
+      var current_cell_id;
+
       function koko(id) {
-          alert(id)
+          $('#'+current_cell_id ).css("background-color", "white");
+          current_cell_id = id;
+          $('#'+id ).css("background-color", "yellow");
       }
 
       function show_add_popup(popup_type)
       {
-          //when IE - fade immediately
-          //if($.browser.msie)
-          //{
-          //    $('#opaco').height($(document).height()).toggleClass('hidden');
-          //}
-          //else
-          //in all the rest browsers - fade slowly
-          //{
-          //    $('#opaco').height($(document).height()).toggleClass('hidden').fadeTo('slow', 0.7);
-          //}
+//          when IE - fade immediately
+          if($.browser.msie)
+          {
+              $('#opaco').height($(document).height()).toggleClass('hidden');
+          }
+          else
+//          in all the rest browsers - fade slowly
+          {
+              $('#opaco').height($(document).height()).toggleClass('hidden').fadeTo('slow', 0.7);
+          }
 
-          $('#elemets').toggleClass('hidden');
+//          $('#elemets').toggleClass('hidden');
 
           $('#popup')
                   .html($('#popup_' + popup_type).html())
@@ -69,11 +73,32 @@
 
       function closePopup()
       {
-//          $('#opaco').toggleClass('hidden').removeAttr('style');
+          $('#opaco').toggleClass('hidden').removeAttr('style');
           $('#popup').toggleClass('hidden');
-          $('#elemets').toggleClass('hidden');
           return false;
       }
+
+      $(document).keydown(function(e){
+          if (e.keyCode == 40) {
+              koko(current_cell_id+1)
+              return false;
+          }
+          if (e.keyCode == 38) {
+              koko(current_cell_id-1)
+              return false;
+          }
+      });
+
+//      Character codes:
+//
+//              37 - left
+//
+//      38 - up
+//
+//      39 - right
+//
+//      40 - down
+
   </script>
 
   <div id="popup_add" class="hidden">
