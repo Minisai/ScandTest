@@ -1,0 +1,17 @@
+<script type="text/JavaScript" src="table_fun.js"></script>
+<table name="Employees_table" id="employees" >
+  <tr>
+    <th>First_name</th>
+    <th>Surname</th>
+    <th>Date of Birth</th>
+    <th>Salary</th>
+  </tr>
+  <% Employee.all.each do |employee| %>
+      <tr data-empid ="<%= employee.id %>">
+        <td><%= employee.first_name %></td>
+        <td><%= employee.surname %></td>
+        <td><%= employee.date_of_birth%></td>
+        <td><%= employee.salary %>  RUB</td>
+      </tr>
+  <% end %>
+</table>

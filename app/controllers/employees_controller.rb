@@ -25,7 +25,6 @@ class EmployeesController < ApplicationController
 
   def show
 
-
   end
 
   def update
@@ -38,5 +37,9 @@ class EmployeesController < ApplicationController
 
   def start_edit
 
+  end
+
+  def table
+    render :json => Employee.all
   end
 end
