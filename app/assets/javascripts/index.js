@@ -44,12 +44,16 @@ $(document).ready ( function(){
 });
 
 function onRemoveButtonClick(){
-    alert($(current_row).data("empid"));
-    $(current_row).hide('slow', function(){
-        $(current_row).remove();
-        current_row = null;
-    });
-
+    if (confirm("Are you sure?")){
+        $.ajax({
+            type: "DELETE",
+            url: "employees/" + $(current_row).data("empid"),
+            success: function(){
+                 console.log("Deleted");
+                refreshTable();
+            }
+        });
+    }
 }
 
 function onEditButtonClick(){
@@ -92,3 +96,59 @@ function renderTable(employees){
     table.push('</table>');
     $("#employees").html(table.join(""));
 }
+
+var current_row = undefined;
+
+function select_record(row) {
+    if($(current_row).get(0) == $(row).get(0))
+    {
+        $(row).css("background-color", "white");
+        current_row = undefined;
+    }
+    else
+    {
+        $(current_row ).css("background-color", "white");
+        current_row = row;
+        $(row).css("background-color", "yellow");
+    }
+}
+
+$(document).keydown( function(e){
+    var next;
+    if (e.keyCode == 40) {
+        next = $(current_row).next();
+        if (next == undefined)
+            return;
+        if ($(next).is("tr")){
+            select_record(next);
+            return false;
+        }
+    }
+    if (e.keyCode == 38) {
+        next = $(current_row).prev();
+        if (next == undefined)
+            return;
+        if ($(next).is("tr") && $("#employees tr:eq(0)").get(0) != $(next).get(0) ){
+            select_record(next);
+            return false;
+        }
+    }
+    if (current_row != undefined && (e.keyCode == 46 || e.keyCode == 110)) {
+        onRemoveButtonClick();
+        return false;
+    }
+});
+
+$(document).ready ( function(){
+    $('#employees').click(onTableClick);
+});
+
+
+function onTableClick(e){
+    var row = $(e.target).parent();
+    if (row != undefined && $(row).is("tr")){
+        select_record(row);
+    }
+
+}
+

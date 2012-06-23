@@ -8,7 +8,6 @@ class EmployeesController < ApplicationController
     if new_employee.save
       respond_to do |format|
         format.html  { redirect_to :back}
-        format.js
       end
     else
       redirect_to :back
@@ -32,6 +31,10 @@ class EmployeesController < ApplicationController
   end
 
   def destroy
+     Employee.find_by_id(params[:id]).delete
+     respond_to do |format|
+       format.html  { redirect_to :back}
+       end
 
   end
 
