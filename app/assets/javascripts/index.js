@@ -39,9 +39,51 @@ function closePopup(){
 
 $(document).ready ( function(){
     $('#RemoveButton').click(onRemoveButtonClick);
-    $('#EditButton').click(onEditButtonClick);
+    //$('#EditButton').click(onEditButtonClick);
     $('#AddButton').click(onAddButtonClick);
+    //$('#ConfirmButton').click(onConfirmButtonClick)
 });
+
+function onConfirmButtonClick(){
+    if (confirm("Are you sure?")){
+//        var employee = new Object();
+//        employee.first_name = $("#FirstNameText").attr('value');
+//        employee.surname = $("#SurnameText").attr('value');
+//        employee.date_of_birth = $("#DateOfBirthText").attr('value');
+//        employee.salary = $("#SalaryText").attr('value');
+//
+//        var employee_filter = new Array();
+//        employee_filter[0] = "first_name";
+//        employee_filter[1] = "surname";
+//        employee_filter[2] = "date_of_birth";
+//        employee_filter[3] = "salary";
+//        $.ajax({
+//            type: "PUT",
+//            url: "employees/" + $(current_row).data("empid"),
+//            data: { page : JSON.stringify( employee ) },
+//            dataType: 'json',
+//            success: function(){
+//                console.log("Updated");
+//                refreshTable();
+//            }
+//        });
+        $.ajax({
+            type: "PUT",
+            url: "employees/" + $(current_row).data("empid"),
+            data: { page : {first_name: $("#FirstNameText").attr('value'), surname: $("#SurnameText").attr('value'), date_of_birth: $("#DateOfBirthText").attr('value'), salary: $("#SalaryText").attr('value')} },
+            dataType: 'json',
+            success: function(){
+                console.log("Updated");
+                refreshTable();
+            },
+            error: function(data){
+                refreshTable();
+            }
+
+        });
+    }
+    closePopup();
+}
 
 function onRemoveButtonClick(){
     if (confirm("Are you sure?")){
@@ -49,7 +91,7 @@ function onRemoveButtonClick(){
             type: "DELETE",
             url: "employees/" + $(current_row).data("empid"),
             success: function(){
-                 console.log("Deleted");
+                console.log("Deleted");
                 refreshTable();
             }
         });
@@ -57,7 +99,13 @@ function onRemoveButtonClick(){
 }
 
 function onEditButtonClick(){
-    alert($(current_row).data("empid"));
+    var empid = $(current_row).data("empid");
+    $("#FirstNameText").attr('value', $(current_row).children(":nth-child(1)").text());
+    $("#SurnameText").attr('value', $(current_row).children(":nth-child(2)").text());
+    $("#DateOfBirthText").attr('value', $(current_row).children(":nth-child(3)").text());
+    $("#SalaryText").attr('value', $(current_row).children(":nth-child(4)").text());
+
+    show_add_popup('edit');
 }
 
 function onAddButtonClick(){
@@ -137,6 +185,11 @@ $(document).keydown( function(e){
         onRemoveButtonClick();
         return false;
     }
+    if (current_row != undefined && (e.keyCode == 13 )) {
+        onEditButtonClick();
+        return false;
+    }
+
 });
 
 $(document).ready ( function(){
@@ -149,6 +202,5 @@ function onTableClick(e){
     if (row != undefined && $(row).is("tr")){
         select_record(row);
     }
-
 }
 

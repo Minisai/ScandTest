@@ -1,38 +1,68 @@
 <script type="text/javascript" src="index.js"></script>
-<div>
-
-  <div id="opaco" class="hidden"></div>
-  <div id="popup" class="hidden"></div>
-
-  <div id="elemets">
-    <div name="checkbox">
-      <input type=checkbox name="Use_Ajax"/> Use Ajax
-    </div>
-    <div id="employees_table">
-        <%= render 'employees/table' %>
-    </div>
-
-    <button name ="Add_Button" id="AddButton"> Add </button>
-    <button name ="Edit_Button" id="EditButton"> Edit </button>
-    <button name = "Remove_Button" id="RemoveButton"> Remove </button>
-
+<div id="opaco" class="hidden"></div>
+<div id="popup" class="hidden"></div>
+<div id="elemets">
+  <div name="checkbox">
+    <input type=checkbox name="Use_Ajax"/> Use Ajax
   </div>
-  <div id="popup_add" class="hidden">
-    <div class="add" class="hidden">
-      <h3>Add Employee</h3>
-      <%= form_for Employee.new, :remote => true  do |f| %>
-          <div class="field">
-            <%= f.text_field :first_name %>
-            <%= f.text_field :surname %>
-            <%= f.text_field :date_of_birth %>
-            <%= f.text_field :salary  %>
-          </div>
-          <div class="actions">
-            <%= f.submit "Submit" %>
-          </div>
-      <% end %>
-      <input type="button" value="Send" onclick="closePopup(); return false;" />
-      <input type="button" value="Cancel" onclick="closePopup(); return false;" />
-    </div>
+  <div id="employees_table">
+    <%= render 'employees/table' %>
+  </div>
+  <button name ="Add_Button" id="AddButton"> Add </button>
+  <button name ="Edit_Button" id="EditButton" onclick="onEditButtonClick()"> Edit </button>
+  <button name = "Remove_Button" id="RemoveButton"> Remove </button>
+</div>
+
+<div id="popup_add" class="hidden">
+  <div class="add" class="hidden">
+    <h3>Add Employee</h3>
+    <%= form_for Employee.new, :remote => true  do |f| %>
+        <table>
+          <tr>
+            <td> First name:</td>
+            <td><%= f.text_field :first_name %></td>
+          </tr>
+          <tr>
+            <td> Surname:</td>
+            <td><%= f.text_field :surname %></td>
+          </tr>
+          <tr>
+            <td> Date of birth:</td>
+            <td><%= f.text_field :date_of_birth %></td>
+          </tr>
+          <tr>
+            <td> Salary:</td>
+            <td><%= f.text_field :salary %></td>
+          </tr>
+        </table>
+        <%= f.submit "Add" %>
+        <input type="button" value="Cancel" class="CancelButton" onclick="closePopup();" />
+    <% end %>
+  </div>
+</div>
+
+<div id="popup_edit" class="hidden">
+  <div class="edit" class="hidden">
+    <h3>Edit Employee</h3>
+    <table>
+      <tr>
+        <td> First name:</td>
+        <td><input type="text" id="FirstNameText" /></td>
+      </tr>
+      <tr>
+        <td> Surname:</td>
+        <td><input type="text" id="SurnameText" /></td>
+      </tr>
+      <tr>
+        <td> Date of birth:</td>
+        <td><input type="text" id="DateOfBirthText" /></td>
+      </tr>
+      <tr>
+        <td> Salary:</td>
+        <td><input type="text" id="SalaryText" /></td>
+      </tr>
+    </table>
+    <input type="button" value="Confirm" onclick="onConfirmButtonClick(); return false;" />
+    <input type="button" value="Cancel" class="CancelButton" onclick="closePopup(); return false;" />
   </div>
 </div>

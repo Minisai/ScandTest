@@ -8,6 +8,7 @@ class EmployeesController < ApplicationController
     if new_employee.save
       respond_to do |format|
         format.html  { redirect_to :back}
+        format.js
       end
     else
       redirect_to :back
@@ -27,7 +28,15 @@ class EmployeesController < ApplicationController
   end
 
   def update
-
+    emp = Employee.find_by_id(params[:id])
+    emp.first_name = params[:page][:first_name]
+    emp.surname = params[:page][:surname]
+    emp.date_of_birth = params[:page][:date_of_birth]
+    emp.salary = params[:page][:salary]
+    emp.save
+    respond_to do |format|
+      format.html  { redirect_to :back}
+    end
   end
 
   def destroy
@@ -35,7 +44,6 @@ class EmployeesController < ApplicationController
      respond_to do |format|
        format.html  { redirect_to :back}
        end
-
   end
 
   def start_edit
