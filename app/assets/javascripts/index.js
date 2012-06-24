@@ -38,39 +38,19 @@ function closePopup(){
 }
 
 $(document).ready ( function(){
+    $("#employees").tablesorter();
     $('#RemoveButton').click(onRemoveButtonClick);
-    //$('#EditButton').click(onEditButtonClick);
+    $('#EditButton').click(onEditButtonClick);
     $('#AddButton').click(onAddButtonClick);
-    //$('#ConfirmButton').click(onConfirmButtonClick)
 });
 
 function onConfirmButtonClick(){
     if (confirm("Are you sure?")){
-//        var employee = new Object();
-//        employee.first_name = $("#FirstNameText").attr('value');
-//        employee.surname = $("#SurnameText").attr('value');
-//        employee.date_of_birth = $("#DateOfBirthText").attr('value');
-//        employee.salary = $("#SalaryText").attr('value');
-//
-//        var employee_filter = new Array();
-//        employee_filter[0] = "first_name";
-//        employee_filter[1] = "surname";
-//        employee_filter[2] = "date_of_birth";
-//        employee_filter[3] = "salary";
-//        $.ajax({
-//            type: "PUT",
-//            url: "employees/" + $(current_row).data("empid"),
-//            data: { page : JSON.stringify( employee ) },
-//            dataType: 'json',
-//            success: function(){
-//                console.log("Updated");
-//                refreshTable();
-//            }
-//        });
         $.ajax({
             type: "PUT",
             url: "employees/" + $(current_row).data("empid"),
-            data: { page : {first_name: $("#FirstNameText").attr('value'), surname: $("#SurnameText").attr('value'), date_of_birth: $("#DateOfBirthText").attr('value'), salary: $("#SalaryText").attr('value')} },
+            data: { page : {first_name: $("#FirstNameText").attr('value'), surname: $("#SurnameText").attr('value'),
+                date_of_birth: $("#DateOfBirthText").attr('value'), salary: $("#SalaryText").attr('value')} },
             dataType: 'json',
             success: function(){
                 console.log("Updated");
@@ -79,10 +59,13 @@ function onConfirmButtonClick(){
             error: function(data){
                 refreshTable();
             }
-
         });
     }
     closePopup();
+}
+
+function sortBy(){
+
 }
 
 function onRemoveButtonClick(){
@@ -119,12 +102,15 @@ function refreshTable(){
 
 function renderTable(employees){
     var table =  [
+        '<thead>',
         '<tr>',
         '<th>First_name</th>',
         '<th>Surname</th>',
         '<th>Date of Birth</th>',
         '<th>Salary</th>',
-        '</tr>'];
+        '</tr>',
+        '</thead>',
+        '<tbody>'];
     $.each(employees, function(k, v){
         table.push(['<tr data-empid="', v.id, '">'].join(""));
         table.push('<td>');
@@ -140,9 +126,11 @@ function renderTable(employees){
         table.push(v.salary);
         table.push('</td>');
         table.push('</tr>');
+
     });
-    table.push('</table>');
+    table.push('</tbody>');
     $("#employees").html(table.join(""));
+    $("#employees").tablesorter();
 }
 
 var current_row = undefined;

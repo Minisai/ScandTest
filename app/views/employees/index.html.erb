@@ -2,14 +2,11 @@
 <div id="opaco" class="hidden"></div>
 <div id="popup" class="hidden"></div>
 <div id="elemets">
-  <div name="checkbox">
-    <input type=checkbox name="Use_Ajax"/> Use Ajax
-  </div>
   <div id="employees_table">
     <%= render 'employees/table' %>
   </div>
   <button name ="Add_Button" id="AddButton"> Add </button>
-  <button name ="Edit_Button" id="EditButton" onclick="onEditButtonClick()"> Edit </button>
+  <button name ="Edit_Button" id="EditButton"> Edit </button>
   <button name = "Remove_Button" id="RemoveButton"> Remove </button>
 </div>
 
@@ -47,7 +44,7 @@
     <table>
       <tr>
         <td> First name:</td>
-        <td><input type="text" id="FirstNameText" /></td>
+        <td><input type="text" id="FirstNameText" value ="sa"/></td>
       </tr>
       <tr>
         <td> Surname:</td>

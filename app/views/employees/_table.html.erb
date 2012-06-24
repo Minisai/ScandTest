@@ -1,11 +1,14 @@
 <script type="text/JavaScript" src="index.js"></script>
-<table name="Employees_table" id="employees" >
+<table name="Employees_table" id="employees" class="tablesorter" >
+  <thead>
   <tr>
-    <th>First_name</th>
-    <th>Surname</th>
-    <th>Date of Birth</th>
-    <th>Salary</th>
+    <th id="FirstNameHeader">First_name</th>
+    <th id="SurnameHeader">Surname</th>
+    <th id="DateOfBirthHeader">Date of Birth</th>
+    <th id="SalaryHeader">Salary</th>
   </tr>
+  </thead>
+  <tbody>
   <% Employee.all.each do |employee| %>
       <tr data-empid ="<%= employee.id %>">
         <td><%= employee.first_name %></td>
@@ -14,4 +17,5 @@
         <td><%= employee.salary %></td>
       </tr>
   <% end %>
+  </tbody>
 </table>
