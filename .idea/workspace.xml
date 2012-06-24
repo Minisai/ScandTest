@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="dde7c03f-c75b-4c0d-9b5d-5d96ede5fa28" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/index.js" afterPath="$PROJECT_DIR$/app/assets/javascripts/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/employee.rb" afterPath="$PROJECT_DIR$/app/models/employee.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/employees/_table.html.erb" afterPath="$PROJECT_DIR$/app/views/employees/_table.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/employees/index.html.erb" afterPath="$PROJECT_DIR$/app/views/employees/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/_stylesheets.html.erb" afterPath="$PROJECT_DIR$/app/views/layouts/_stylesheets.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
     </list>
     <ignored path="ScandTest.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,10 +43,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/assets/javascripts/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="132" column="34" selection-start="3832" selection-end="3832" vertical-scroll-proportion="0.8557047">
+            <state line="132" column="34" selection-start="3832" selection-end="3832" vertical-scroll-proportion="-24.67742">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Gemfile" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Gemfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="0" selection-start="554" selection-end="554" vertical-scroll-proportion="0.42162162">
               <folding />
             </state>
           </provider>
@@ -69,7 +74,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/views/employees/_employee.html.erb" />
         <option value="$PROJECT_DIR$/app/assets/blueprint/print.css" />
         <option value="$PROJECT_DIR$/app/assets/stylesheets/application.css" />
         <option value="$PROJECT_DIR$/app/views/employees/table.js" />
@@ -85,6 +89,7 @@
         <option value="$PROJECT_DIR$/app/assets/stylesheets/table_style.css" />
         <option value="$PROJECT_DIR$/app/views/employees/index.html.erb" />
         <option value="$PROJECT_DIR$/app/assets/javascripts/index.js" />
+        <option value="$PROJECT_DIR$/Gemfile" />
       </list>
     </option>
   </component>
@@ -96,7 +101,8 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="-1085" />
+    <option name="x" value="-1920" />
+    <option name="y" value="-5" />
     <option name="width" value="1920" />
     <option name="height" value="1085" />
   </component>
@@ -764,7 +770,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="-1085" width="1920" height="1085" extended-state="6" />
+    <frame x="-1920" y="-5" width="1920" height="1085" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -841,13 +847,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/helpers/application_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/helpers/employees_helper.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -950,7 +949,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/javascripts/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="34" selection-start="3832" selection-end="3832" vertical-scroll-proportion="0.8557047">
+        <state line="132" column="34" selection-start="3832" selection-end="3832" vertical-scroll-proportion="-24.67742">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gemfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="0" selection-start="554" selection-end="554" vertical-scroll-proportion="0.42162162">
           <folding />
         </state>
       </provider>
