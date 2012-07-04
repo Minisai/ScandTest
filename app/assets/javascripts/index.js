@@ -112,7 +112,7 @@ function onRemoveButtonClick(){
 		if (window.ActiveXObject) {
 			request = new ActiveXObject("Microsoft.XMLHTTP");
 		}
-	}
+	}	
 	request.open("DELETE", "employees/" + $(current_row).data("empid"), true);		
 	request.onreadystatechange = function() {
 		if (request.readyState==4){ 
@@ -243,7 +243,7 @@ $(document).keydown(function(e){
         if (next == undefined)
             return;
         else{
-			if(next.tagName != "TH"){
+			if(next.cells[0].tagName != "TH"){
 				select_record(next);
 				return false;
 			}
