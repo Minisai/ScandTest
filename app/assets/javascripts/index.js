@@ -9,9 +9,7 @@ function show_add_popup(popup_type){
     {
         $('#opaco').height($(document).height()).toggleClass('hidden').fadeTo('slow', 0.7);
     }
-
-//          $('#elemets').toggleClass('hidden');
-
+	
     $('#popup')
         .html($('#popup_' + popup_type).html())
         .alignCenter()
@@ -19,6 +17,27 @@ function show_add_popup(popup_type){
 
     return false;
 }
+
+function onDocumentLoad(){
+	//align element in the middle of the screen
+    $.fn.alignCenter = function() {
+        //get margin left
+        var marginLeft = Math.max(40, parseInt($(window).width()/2 - $(this).width()/2)) + 'px';
+        //get margin top
+        var marginTop = Math.max(40, parseInt($(window).height()/2 - $(this).height()/2)) + 'px';
+        //return updated element
+        return $(this).css({'margin-left':marginLeft, 'margin-top':marginTop});
+    };
+	
+	$("#employees").tablesorter();
+    $('#RemoveButton').click(onRemoveButtonClick);
+    $('#EditButton').click(onEditButtonClick);
+    $('#AddButton').click(onAddButtonClick);
+	
+	$('#employees').click(onTableClick);
+
+}
+/*
 $(document).ready(function(){
     //align element in the middle of the screen
     $.fn.alignCenter = function() {
@@ -29,56 +48,79 @@ $(document).ready(function(){
         //return updated element
         return $(this).css({'margin-left':marginLeft, 'margin-top':marginTop});
     };
+	
+	$("#employees").tablesorter();
+    $('#RemoveButton').click(onRemoveButtonClick);
+    $('#EditButton').click(onEditButtonClick);
+    $('#AddButton').click(onAddButtonClick);
+	
+	$('#employees').click(onTableClick);
 });
-
+*/
 function closePopup(){
     $('#opaco').toggleClass('hidden').removeAttr('style');
     $('#popup').toggleClass('hidden');
     return false;
 }
 
-$(document).ready ( function(){
-    $("#employees").tablesorter();
-    $('#RemoveButton').click(onRemoveButtonClick);
-    $('#EditButton').click(onEditButtonClick);
-    $('#AddButton').click(onAddButtonClick);
-});
 
 function onConfirmButtonClick(){
     if (confirm("Are you sure?")){
-        $.ajax({
-            type: "PUT",
-            url: "employees/" + $(current_row).data("empid"),
-            data: { page : {first_name: $("#FirstNameText").attr('value'), surname: $("#SurnameText").attr('value'),
-                date_of_birth: $("#DateOfBirthText").attr('value'), salary: $("#SalaryText").attr('value')} },
-            dataType: 'json',
-            success: function(){
-                console.log("Updated");
-                refreshTable();
-            },
-            error: function(data){
-                refreshTable();
-            }
-        });
+		if (window.XMLHttpRequest) {
+			request = new XMLHttpRequest();
+		}
+		else {
+			if (window.ActiveXObject) {
+			request = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		}				
+				
+		request.open("PUT", "employees/" + $(current_row).data("empid"), true);		
+		request.onreadystatechange = function() {
+			if (request.readyState==4){ 
+				if (request.status == 200) {
+					console.log("Updated");
+					refreshTable();
+				} 
+				else {
+					alert("Error ");
+				}				   
+			}
+		}		
+		request.setRequestHeader("Content-type", "application/json");
+		
+		var params = { 'page': {'first_name': $("#FirstNameText").attr('value'), 'surname': $("#SurnameText").attr('value'), 'date_of_birth': $("#DateOfBirthText").attr('value'), 'salary': $("#SalaryText").attr('value') } };
+		request.send(JSON.stringify(params));
     }
     closePopup();
 }
 
-function sortBy(){
-
-}
 
 function onRemoveButtonClick(){
-    if (confirm("Are you sure?")){
-        $.ajax({
-            type: "DELETE",
-            url: "employees/" + $(current_row).data("empid"),
-            success: function(){
-                console.log("Deleted");
-                refreshTable();
-            }
-        });
-    }
+   if (confirm("Are you sure?")){
+	
+	if (window.XMLHttpRequest) {
+	request = new XMLHttpRequest();
+	}
+	else {
+		if (window.ActiveXObject) {
+			request = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	}
+	request.open("DELETE", "employees/" + $(current_row).data("empid"), true);		
+	request.onreadystatechange = function() {
+		if (request.readyState==4){ 
+			if (request.status == 200) {
+				console.log("Deleted");
+				refreshTable();
+			} 
+			else {
+				alert("Error");
+			}				   
+		}
+	}
+	request.send(null);
+   } 	
 }
 
 function onEditButtonClick(){
@@ -97,7 +139,31 @@ function onAddButtonClick(){
 
 
 function refreshTable(){
-    $.get('table', renderTable);
+	if (window.XMLHttpRequest) {
+	request = new XMLHttpRequest();
+	}
+	else {
+		if (window.ActiveXObject) {
+			request = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	}
+	
+	request = new XMLHttpRequest();
+	request.open("GET", 'table', true);		
+	request.onreadystatechange = function() {
+		if (request.readyState==4){ 
+			if (request.status == 200) {
+				var response = request.responseText;
+				var emp_array = jsonParse(response); 
+				renderTable(emp_array);
+			} 
+			else {
+				alert("Error");
+			}				   
+		}
+	}
+	
+	request.send(null);
 }
 
 function renderTable(employees){
@@ -129,7 +195,9 @@ function renderTable(employees){
 
     });
     table.push('</tbody>');
-    $("#employees").html(table.join(""));
+    
+	document.getElementById("employees").innerHTML = (table.join(""));
+//	$("#employees").html(table.join(""));
     $("#employees").tablesorter();
 }
 
@@ -143,7 +211,7 @@ function select_record(row) {
     }
     else
     {
-        $(current_row ).css("background-color", "white");
+        $(current_row).css("background-color", "white");
         current_row = row;
         $(row).css("background-color", "yellow");
     }
@@ -178,10 +246,6 @@ $(document).keydown( function(e){
         return false;
     }
 
-});
-
-$(document).ready ( function(){
-    $('#employees').click(onTableClick);
 });
 
 
