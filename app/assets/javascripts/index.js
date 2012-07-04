@@ -2,39 +2,44 @@ function show_add_popup(popup_type){
 //          when IE - fade immediately
     if($.browser.msie)
     {
-        $('#opaco').height($(document).height()).toggleClass('hidden');
+		document.getElementById("opaco").style.height = document.body.offsetHeight;
+        document.getElementById("opaco").className = document.getElementById("opaco").className.replace( /(?:^|\s)hidden(?!\S)/ , '' );
     }
     else
 //          in all the rest browsers - fade slowly
     {
-        $('#opaco').height($(document).height()).toggleClass('hidden').fadeTo('slow', 0.7);
+		//$('#opaco').fadeTo('slow', 0.7);
+		document.getElementById("opaco").style.height = document.body.offsetHeight;		
+		document.getElementById("opaco").className = document.getElementById("opaco").className.replace( /(?:^|\s)hidden(?!\S)/ , '' );	
     }
 	
-    $('#popup')
-        .html($('#popup_' + popup_type).html())
-        .alignCenter()
-        .toggleClass('hidden');
+	document.getElementById("popup").innerHTML = document.getElementById("popup_"+popup_type).innerHTML;
+	document.getElementById("popup").className = document.getElementById("popup").className.replace( /(?:^|\s)hidden(?!\S)/ , '' );	
+	
+    alignCenter("popup");
 
     return false;
 }
 
+    function alignCenter(id) {
+        //get margin left
+        var marginLeft = Math.max(40, parseInt(document.body.offsetHeight/2 - document.getElementById(id).offsetWidth *2)) + 'px';
+        //get margin top
+        var marginTop = Math.max(40, parseInt(document.body.offsetWidth/2 - document.getElementById(id).offsetWidth)) + 'px';
+        //return updated element
+        document.getElementById(id).style.marginLeft = marginLeft;
+		document.getElementById(id).style.marginTop = marginTop;
+    };
+
 function onDocumentLoad(){
 	//align element in the middle of the screen
-    $.fn.alignCenter = function() {
-        //get margin left
-        var marginLeft = Math.max(40, parseInt($(window).width()/2 - $(this).width()/2)) + 'px';
-        //get margin top
-        var marginTop = Math.max(40, parseInt($(window).height()/2 - $(this).height()/2)) + 'px';
-        //return updated element
-        return $(this).css({'margin-left':marginLeft, 'margin-top':marginTop});
-    };
 	
 	$("#employees").tablesorter();
-    $('#RemoveButton').click(onRemoveButtonClick);
-    $('#EditButton').click(onEditButtonClick);
-    $('#AddButton').click(onAddButtonClick);
 	
-	$('#employees').click(onTableClick);
+	document.getElementById('RemoveButton').onclick = onRemoveButtonClick;
+	document.getElementById('EditButton').onclick = onEditButtonClick;
+	document.getElementById('AddButton').onclick = onAddButtonClick;
+	document.getElementById('employees').onclick = onTableClick;
 
 }
 /*
@@ -58,8 +63,9 @@ $(document).ready(function(){
 });
 */
 function closePopup(){
-    $('#opaco').toggleClass('hidden').removeAttr('style');
-    $('#popup').toggleClass('hidden');
+    document.getElementById("opaco").classList.add("hidden");
+    document.getElementById("popup").classList.add("hidden");
+
     return false;
 }
 
@@ -124,6 +130,7 @@ function onRemoveButtonClick(){
 }
 
 function onEditButtonClick(){
+
     var empid = $(current_row).data("empid");
     $("#FirstNameText").attr('value', $(current_row).children(":nth-child(1)").text());
     $("#SurnameText").attr('value', $(current_row).children(":nth-child(2)").text());
@@ -177,6 +184,7 @@ function renderTable(employees){
         '</tr>',
         '</thead>',
         '<tbody>'];
+	
     $.each(employees, function(k, v){
         table.push(['<tr data-empid="', v.id, '">'].join(""));
         table.push('<td>');
@@ -204,37 +212,41 @@ function renderTable(employees){
 var current_row = undefined;
 
 function select_record(row) {
-    if($(current_row).get(0) == $(row).get(0))
+    if(current_row == row)
     {
-        $(row).css("background-color", "white");
+        row.style.backgroundColor = "white";
         current_row = undefined;
     }
     else
     {
-        $(current_row).css("background-color", "white");
+		if(current_row) {
+			current_row.style.backgroundColor = "white";
+		}
         current_row = row;
-        $(row).css("background-color", "yellow");
+        row.style.backgroundColor = "yellow";
     }
 }
 
-$(document).keydown( function(e){
+$(document).keydown(function(e){
     var next;
     if (e.keyCode == 40) {
-        next = $(current_row).next();
+        next = current_row.parentNode.parentNode.rows[current_row.rowIndex+1];
         if (next == undefined)
             return;
-        if ($(next).is("tr")){
+        else{
             select_record(next);
             return false;
         }
     }
     if (e.keyCode == 38) {
-        next = $(current_row).prev();
+        next = current_row.parentNode.parentNode.rows[current_row.rowIndex-1];
         if (next == undefined)
             return;
-        if ($(next).is("tr") && $("#employees tr:eq(0)").get(0) != $(next).get(0) ){
-            select_record(next);
-            return false;
+        else{
+			if(next.tagName != "TH"){
+				select_record(next);
+				return false;
+			}
         }
     }
     if (current_row != undefined && (e.keyCode == 46 || e.keyCode == 110)) {
@@ -250,7 +262,8 @@ $(document).keydown( function(e){
 
 
 function onTableClick(e){
-    var row = $(e.target).parent();
+    //var row = $(e.target).parent();
+	var row = e.target.parentNode;
     if (row != undefined && $(row).is("tr")){
         select_record(row);
     }
