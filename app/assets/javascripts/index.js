@@ -1,17 +1,7 @@
 function show_add_popup(popup_type){
-//          when IE - fade immediately
-    if($.browser.msie)
-    {
-		document.getElementById("opaco").style.height = document.body.offsetHeight;
-        document.getElementById("opaco").className = document.getElementById("opaco").className.replace( /(?:^|\s)hidden(?!\S)/ , '' );
-    }
-    else
-//          in all the rest browsers - fade slowly
-    {
-		//$('#opaco').fadeTo('slow', 0.7);
-		document.getElementById("opaco").style.height = document.body.offsetHeight;		
-		document.getElementById("opaco").className = document.getElementById("opaco").className.replace( /(?:^|\s)hidden(?!\S)/ , '' );	
-    }
+
+	document.getElementById("opaco").style.height = document.body.offsetHeight;		
+	document.getElementById("opaco").className = document.getElementById("opaco").className.replace( /(?:^|\s)hidden(?!\S)/ , '' );	
 	
 	document.getElementById("popup").innerHTML = document.getElementById("popup_"+popup_type).innerHTML;
 	document.getElementById("popup").className = document.getElementById("popup").className.replace( /(?:^|\s)hidden(?!\S)/ , '' );	
@@ -32,9 +22,8 @@ function show_add_popup(popup_type){
     };
 
 function onDocumentLoad(){
-	//align element in the middle of the screen
 	
-	$("#employees").tablesorter();
+	//$("#employees").tablesorter();
 	
 	document.getElementById('RemoveButton').onclick = onRemoveButtonClick;
 	document.getElementById('EditButton').onclick = onEditButtonClick;
@@ -42,26 +31,7 @@ function onDocumentLoad(){
 	document.getElementById('employees').onclick = onTableClick;
 
 }
-/*
-$(document).ready(function(){
-    //align element in the middle of the screen
-    $.fn.alignCenter = function() {
-        //get margin left
-        var marginLeft = Math.max(40, parseInt($(window).width()/2 - $(this).width()/2)) + 'px';
-        //get margin top
-        var marginTop = Math.max(40, parseInt($(window).height()/2 - $(this).height()/2)) + 'px';
-        //return updated element
-        return $(this).css({'margin-left':marginLeft, 'margin-top':marginTop});
-    };
-	
-	$("#employees").tablesorter();
-    $('#RemoveButton').click(onRemoveButtonClick);
-    $('#EditButton').click(onEditButtonClick);
-    $('#AddButton').click(onAddButtonClick);
-	
-	$('#employees').click(onTableClick);
-});
-*/
+
 function closePopup(){
     document.getElementById("opaco").classList.add("hidden");
     document.getElementById("popup").classList.add("hidden");
@@ -79,9 +49,9 @@ function onConfirmButtonClick(){
 			if (window.ActiveXObject) {
 			request = new ActiveXObject("Microsoft.XMLHTTP");
 			}
-		}				
+		}		
 				
-		request.open("PUT", "employees/" + $(current_row).data("empid"), true);		
+		request.open("PUT", "employees/" + current_row.getAttribute("data-empid"), true);		
 		request.onreadystatechange = function() {
 			if (request.readyState==4){ 
 				if (request.status == 200) {
@@ -95,7 +65,12 @@ function onConfirmButtonClick(){
 		}		
 		request.setRequestHeader("Content-type", "application/json");
 		
-		var params = { 'page': {'first_name': $("#FirstNameText").attr('value'), 'surname': $("#SurnameText").attr('value'), 'date_of_birth': $("#DateOfBirthText").attr('value'), 'salary': $("#SalaryText").attr('value') } };
+		var first_name = document.getElementById('FirstNameText').value;
+		var surname = document.getElementById('SurnameText').value;
+		var date_of_birth = document.getElementById('DateOfBirthText').value;
+		var salary = document.getElementById('SalaryText').value;
+		
+		var params = { 'page': {'first_name': first_name, 'surname': surname, 'date_of_birth': date_of_birth, 'salary': salary } };
 		request.send(JSON.stringify(params));
     }
     closePopup();
@@ -113,7 +88,7 @@ function onRemoveButtonClick(){
 			request = new ActiveXObject("Microsoft.XMLHTTP");
 		}
 	}	
-	request.open("DELETE", "employees/" + $(current_row).data("empid"), true);		
+	request.open("DELETE", "employees/" + current_row.getAttribute("data-empid"), true);		
 	request.onreadystatechange = function() {
 		if (request.readyState==4){ 
 			if (request.status == 200) {
@@ -131,13 +106,14 @@ function onRemoveButtonClick(){
 
 function onEditButtonClick(){
 
-    var empid = $(current_row).data("empid");
-    $("#FirstNameText").attr('value', $(current_row).children(":nth-child(1)").text());
-    $("#SurnameText").attr('value', $(current_row).children(":nth-child(2)").text());
-    $("#DateOfBirthText").attr('value', $(current_row).children(":nth-child(3)").text());
-    $("#SalaryText").attr('value', $(current_row).children(":nth-child(4)").text());
-
     show_add_popup('edit');
+
+    var empid = current_row.getAttribute("data-empid");
+	
+	document.getElementById('FirstNameText').value = current_row.cells[0].innerHTML;
+	document.getElementById('SurnameText').value = current_row.cells[1].innerHTML;
+	document.getElementById('DateOfBirthText').value = current_row.cells[2].innerHTML;
+	document.getElementById('SalaryText').value = current_row.cells[3].innerHTML;;
 }
 
 function onAddButtonClick(){
@@ -173,7 +149,7 @@ function refreshTable(){
 	request.send(null);
 }
 
-function renderTable(employees){
+function renderTable(emp_array){
     var table =  [
         '<thead>',
         '<tr>',
@@ -185,28 +161,27 @@ function renderTable(employees){
         '</thead>',
         '<tbody>'];
 	
-    $.each(employees, function(k, v){
-        table.push(['<tr data-empid="', v.id, '">'].join(""));
+	for(i=0; i < emp_array.length; i++){
+		table.push(['<tr data-empid="', emp_array[i].id, '">'].join(""));
         table.push('<td>');
-        table.push(v.first_name);
+        table.push(emp_array[i].first_name);
         table.push('</td>');
         table.push('<td>');
-        table.push(v.surname);
+        table.push(emp_array[i].surname);
         table.push('</td>');
         table.push('<td>');
-        table.push(v.date_of_birth);
+        table.push(emp_array[i].date_of_birth);
         table.push('</td>');
         table.push('<td>');
-        table.push(v.salary);
+        table.push(emp_array[i].salary);
         table.push('</td>');
         table.push('</tr>');
-
-    });
+	}
+	
     table.push('</tbody>');
     
 	document.getElementById("employees").innerHTML = (table.join(""));
-//	$("#employees").html(table.join(""));
-    $("#employees").tablesorter();
+    //$("#employees").tablesorter();
 }
 
 var current_row = undefined;
@@ -227,7 +202,7 @@ function select_record(row) {
     }
 }
 
-$(document).keydown(function(e){
+document.onkeydown = function(e){
     var next;
     if (e.keyCode == 40) {
         next = current_row.parentNode.parentNode.rows[current_row.rowIndex+1];
@@ -257,14 +232,12 @@ $(document).keydown(function(e){
         onEditButtonClick();
         return false;
     }
-
-});
+}
 
 
 function onTableClick(e){
-    //var row = $(e.target).parent();
 	var row = e.target.parentNode;
-    if (row != undefined && $(row).is("tr")){
+    if (row != undefined && (row.tagName == "TR")){
         select_record(row);
     }
 }
