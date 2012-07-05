@@ -1,6 +1,7 @@
 function show_add_popup(popup_type){
 
-	document.getElementById("opaco").style.height = document.body.offsetHeight;		
+	document.getElementById("opaco").style.height = document.body.offsetHeight + 20 +'px';		
+	document.getElementById("opaco").style.backgroundColor = "Black";
 	document.getElementById("opaco").className = document.getElementById("opaco").className.replace( /(?:^|\s)hidden(?!\S)/ , '' );	
 	
 	document.getElementById("popup").innerHTML = document.getElementById("popup_"+popup_type).innerHTML;
@@ -11,18 +12,18 @@ function show_add_popup(popup_type){
     return false;
 }
 
-    function alignCenter(id) {
-        //get margin left
-        var marginLeft = Math.max(40, parseInt(document.body.offsetHeight/2 - document.getElementById(id).offsetWidth *2)) + 'px';
-        //get margin top
-        var marginTop = Math.max(40, parseInt(document.body.offsetWidth/2 - document.getElementById(id).offsetWidth)) + 'px';
-        //return updated element
-        document.getElementById(id).style.marginLeft = marginLeft;
-		document.getElementById(id).style.marginTop = marginTop;
-    };
+function alignCenter(id) {
+    //get margin left
+    var marginLeft = Math.max(40, parseInt(document.body.offsetHeight/2 - document.getElementById(id).offsetWidth *2)) + 'px';
+    //get margin top
+    var marginTop = Math.max(40, parseInt(document.body.offsetWidth/2 - document.getElementById(id).offsetWidth)) + 'px';
+    //return updated element
+    document.getElementById(id).style.marginLeft = marginLeft;
+	document.getElementById(id).style.marginTop = marginTop;
+};
 
 function onDocumentLoad(){
-	
+	//prompt("das");	
 	//$("#employees").tablesorter();
 	
 	document.getElementById('RemoveButton').onclick = onRemoveButtonClick;
@@ -105,15 +106,17 @@ function onRemoveButtonClick(){
 }
 
 function onEditButtonClick(){
+	if(current_row)
+	{
+		show_add_popup('edit');
 
-    show_add_popup('edit');
-
-    var empid = current_row.getAttribute("data-empid");
+		var empid = current_row.getAttribute("data-empid");
 	
-	document.getElementById('FirstNameText').value = current_row.cells[0].innerHTML;
-	document.getElementById('SurnameText').value = current_row.cells[1].innerHTML;
-	document.getElementById('DateOfBirthText').value = current_row.cells[2].innerHTML;
-	document.getElementById('SalaryText').value = current_row.cells[3].innerHTML;;
+		document.getElementById('FirstNameText').value = current_row.cells[0].innerHTML;
+		document.getElementById('SurnameText').value = current_row.cells[1].innerHTML;
+		document.getElementById('DateOfBirthText').value = current_row.cells[2].innerHTML;
+		document.getElementById('SalaryText').value = current_row.cells[3].innerHTML;
+	}
 }
 
 function onAddButtonClick(){
@@ -233,7 +236,6 @@ document.onkeydown = function(e){
         return false;
     }
 }
-
 
 function onTableClick(e){
 	var row = e.target.parentNode;

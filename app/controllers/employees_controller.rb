@@ -37,6 +37,7 @@ class EmployeesController < ApplicationController
     respond_to do |format|
       format.html  { redirect_to :back}
     end
+	
   end
 
   def destroy
@@ -44,6 +45,7 @@ class EmployeesController < ApplicationController
      respond_to do |format|
        format.html  { redirect_to :back}
        end
+	   
   end
 
   def start_edit
@@ -51,6 +53,9 @@ class EmployeesController < ApplicationController
   end
 
   def table
-    render :json => Employee.all
+	respond_to do |format|
+		format.html { render :json => Employee.all}
+		format.csv { send_data Employee.to_csv, :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment; filename=employees.csv"}
+	end
   end
 end

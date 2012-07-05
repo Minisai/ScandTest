@@ -8,6 +8,7 @@
   <button name ="Add_Button" id="AddButton"> Add </button>
   <button name ="Edit_Button" id="EditButton"> Edit </button>
   <button name = "Remove_Button" id="RemoveButton"> Remove </button>
+  <%= link_to 'Download CSV', table_path(:format=>:csv) %>
 </div>
 
 <div id="popup_add" class="hidden">

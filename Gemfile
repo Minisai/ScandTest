@@ -29,7 +29,7 @@ gem 'jquery-rails'
 
 gem 'faker', '>=0.3.1'
 
-
+gem 'fastercsv'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
